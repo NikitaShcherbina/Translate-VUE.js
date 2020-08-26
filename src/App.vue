@@ -1,32 +1,48 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+  <div class='text-center' id="app">
+    <h1>Word Translator</h1>
+    <h5>Power By Vue.Js</h5>
+    <link rel='stylesheet' href='https://bootswatch.com/3/paper/bootstrap.min.css'>
+    <TranslateForm @formSubmit='translateText'></TranslateForm>
+    <TranslateOutput v-text='transletedText'></TranslateOutput>
   </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+  import TranslateForm from './components/TranslateForm';
+  import TranslateOutput from './components/TranslateOutput';
+  import translate from 'google-translate-open-api';
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+  export default {
+    name: 'app',
+    components: {
+      TranslateForm,
+      TranslateOutput
+    },
+    data: function() {
+      return {
+        transletedText: '' 
+      }
+    },
+    methods: { 
+     async translateText(text, language) {
+      const result = await translate(text, {
+     tld: 'com',
+     to: language
+    });
+    this.transletedText = result.data[0];
+      }
     }
   }
+</script>
+
+<style>
+body {
+  background: #fefefe;
 }
 </style>
+
+
+
+
+
